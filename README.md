@@ -4,8 +4,26 @@ Define your DNS setup in Python, and sync only the changes with Rackspace (for s
 
 ## Motivation
 
+Rackspace is very generous in offering FREE cloud DNS services if you sign up for 
+a cloud account (and there's no requirement for paying for other services either).
+It probably works out for them financially, since their DNS service is pretty 
+impressive on its own, and (for example) I was motivated to praise them here, and 
+elsewhere...
+
+But managing the DNS through the web interface seems like an anti-pattern, particularly
+if one needs to manage a number of similar domains, and have a few servers, etc.
+
+This project includes a simple way of defining the mapping of names to 
+the required DNS entries programmatically (which means that it can be tracked 
+via ```git```, for instance).  
+
+And it also allows for intelligent syncing with Rackspace - only updating 
+the entries that require changes - which makes the whole process much more 
+responsive (since downloading current state and then uploading differences 
+is much quicker than simply re-sending 'already known' facts).
 
 The system has been in use for over 12 months, and works really nicely...
+
 
 
 ## Installation
