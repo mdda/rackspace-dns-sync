@@ -1,6 +1,6 @@
 # rackspace-dns-sync
 
-Define your DNS setup in Python, and sync only the changes with Rackspace (for speed).
+Define your DNS setup in Python, and efficiently sync *only the changes* with Rackspace.
 
 ## Motivation
 
@@ -11,16 +11,19 @@ impressive on its own, and (for example) I was motivated to praise them here, an
 elsewhere...
 
 But managing the DNS through the web interface seems like an anti-pattern, particularly
-if one needs to manage a number of similar domains, and have a few servers, etc.
+if one needs to manage a decent number of domains, with similar (but not identical) 
+properties and have a few different servers, etc.  This is a common problem for anyone
+that has collected a few domain names, put up a few landing pages, seen some 
+services grow a little, moved hosting providers, etc.
 
 This project includes a simple way of defining the mapping of names to 
 the required DNS entries programmatically (which means that it can be tracked 
 via ```git```, for instance).  
 
-And it also allows for intelligent syncing with Rackspace - only updating 
-the entries that require changes - which makes the whole process much more 
-responsive (since downloading current state and then uploading differences 
-is much quicker than simply re-sending 'already known' facts).
+And, using those definitions, allows for intelligent syncing with Rackspace - 
+only updating the entries that require changes - which makes the whole process 
+much more responsive (since downloading current state and then uploading 
+differences is much quicker than simply re-sending 'already known' facts).
 
 The system has been in use for over 12 months, and works really nicely...
 
@@ -41,7 +44,7 @@ pip install pyrax
 pip install --upgrade git+git://github.com/rackspace/pyrax.git
 ```
 
-## Creating the Credentials File
+### Creating the Credentials File
 
 After reading through http://www.collazo.ws/2011/07/08/using-rackspace-dnsaas-with-curl-part-1 
 you should make sure that you can get your Authorization Token (returned in the ```X-Auth-Token: ``` line) 
@@ -74,7 +77,7 @@ python ensure_dns.py
 This will print out debug messages as it goes along.
 
 
-## Checking it worked...
+### Checking it worked...
 
 To confirm a Zone (look for name server claims):
 
