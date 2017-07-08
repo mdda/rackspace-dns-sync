@@ -1,4 +1,3 @@
-
 import pyrax
 import pyrax.exceptions as exc
 
@@ -25,7 +24,7 @@ class Config():
             
         if emailAddress is None: emailAddress = "admin@%s" % name
         
-        print "Domain %s" % name
+        print("Domain %s" % name)
         if name in self.domain_dictionary:
             dom = self.domain_dictionary[name]
             
@@ -33,28 +32,28 @@ class Config():
             changes=dict(name=name, emailAddress=emailAddress, comment=comment, ttl=ttl)
             for k,v in changes.items():
                 if getattr(dom, k) == v:
-                    print "  No change to %s" % k
+                    print("  No change to %s" % k)
                     del changes[k]
                 else:
-                    print "  Change to %s (%s -> %s)" % (k, getattr(dom, k), changes[k])
+                    print("  ** Change to %s (%s -> %s)" % (k, getattr(dom, k), changes[k]))
 
             if len(changes)>0:
                 try:
                     self.domain_dictionary[name].update(emailAddress=emailAddress, ttl=ttl, comment=comment)
-                    print "  Domain %s updated" % name
+                    print("  ** Domain %s updated" % name)
                 except exc.DomainCreationFailed as e:
-                    print "  Domain update failed:", e
+                    print("  !! Domain update failed:", e)
                     exit()
             else:
-                print "  Domain %s no changes" % name
+                print("  No changes to Domain '%s'" % name)
         else:
             # Add the new domain
             try:
                 dom = self.dns.create(name=name, emailAddress=emailAddress, ttl=ttl, comment=comment)
-                print "  Domain %s created" % name
+                print("  ** Domain %s created" % name)
                 self.domain_dictionary[name]=dom
             except exc.DomainCreationFailed as e:
-                print "  Domain creation failed:", e
+                print("  !! Domain creation failed:", e)
                 exit()
 
     def overlay_record_info(self, name, overlays, rec_list):
@@ -78,7 +77,7 @@ class Config():
             if t =='MX':
                 r['data'] = r['data'].replace('%', name)
 
-            #print "  Record : %s" % (repr(r))
+            #print("  Record : %s" % (repr(r)))
             rec_list_final.append(r)
             
         return rec_list_final
@@ -114,12 +113,12 @@ class Config():
                         found=False
                 if found:
                     # This is an exact match r === existing_rec
-                    print "  No need to change record %s" % (repr(r))
+                    print("  No need to change record %s" % (repr(r), ))
                     rec_list_delete_indices.append(i)
                     found_existing_rec=True
                     
             if not found_existing_rec:
-                #print "  Changes required for %s" % (repr(existing_rec))
+                #print("  Changes required for %s" % (repr(existing_rec),))
                 existing_recs_to_delete.append(existing_rec)
         
         # This list is just the updated/unwanted entries - delete them via the API
@@ -129,11 +128,11 @@ class Config():
         rec_list_updates=[]
         for i,r in enumerate(rec_list):
             if not i in rec_list_delete_indices:
-                print "  Updating %s" % (repr(r))
+                print("  ** Updating %s" % (repr(r),))
                 rec_list_updates.append(r)
             
-        #print 
-        #print repr(rec_list_updates)
+        #print()
+        #print(repr(rec_list_updates))
         #exit()
         
         # This list has had all the existing (unchanged) entries removed already
